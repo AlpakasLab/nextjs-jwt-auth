@@ -40,7 +40,7 @@ const { DELETE, POST } = getApiRoutes<{ email: string; password: string }>({
 export { DELETE, POST }
 ```
 
-And create an middleware file `/middleware.ts` and generate the handler using the `getMiddleware()` helper.
+Second, create an middleware file `/middleware.ts` and generate the handler using the `getMiddleware()` helper.
 
 ```ts
 // middleware.ts
@@ -69,6 +69,13 @@ export const middleware = getMiddleware(undefined, async (request, payload) => {
 export const config = {
     matcher: '/admin/:path*'
 }
+```
+
+And create two enviroment variables
+
+```env
+AUTH_URL="application base url"
+AUTH_SECRET="generated token to encrypt the jwt"
 ```
 
 ## 🪄 Using the library
@@ -122,6 +129,24 @@ const onClick = async () => {
         router.refresh()
     } else {
         // signOut failed logic
+    }
+}
+```
+
+## 💎 Typescript
+
+All functions and methods are type-safe, and if you need to modify the JWT object, just overwrite it with a `.d.ts` file.
+
+```ts
+// nextjs-jwt-auth.d.ts
+import { JWT, DefaultJWT } from '@alpakaslab/nextjs-jwt-auth'
+
+declare module '@alpakaslab/nextjs-jwt-auth' {
+    interface JWT extends DefaultJWT {
+        accessToken: string
+        refreshToken: string
+        experisIn: number
+        role: string
     }
 }
 ```
