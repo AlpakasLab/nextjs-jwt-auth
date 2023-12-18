@@ -7,7 +7,7 @@ type ApiOptions<C> = {
     callbacks: {
         signIn: (credentials: C) => JWT | null | Promise<JWT | null>
     }
-    cookie: {
+    cookie?: {
         experis?: number
     }
 }
@@ -41,7 +41,7 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
                     httpOnly: true,
                     sameSite: 'lax',
                     secure: isSecure,
-                    expires: getCookieAge(options.cookie.experis)
+                    expires: getCookieAge(options.cookie?.experis)
                 })
 
                 return Response.json({ success: true }, { status: 200 })
