@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.0.4
+
+### Patch Changes
+
+- 60c1e9e: export jwt type
+
 ## 0.0.3
 
 ### Patch Changes
