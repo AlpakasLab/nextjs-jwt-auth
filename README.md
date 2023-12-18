@@ -1,17 +1,17 @@
 ## ⭐️ About
 
-Next JWT Secure is a library designed for the Next.js 14 ecosystem, aiming to simplify and make JWT authentication more accessible. It is particularly focused on clients who already have a backend with authenticated credentials. Based on the [next-auth](https://github.com/nextauthjs/next-auth) library.
+NextJs JWT Auth is a library designed for the Next.js 14 ecosystem, aiming to simplify and make JWT authentication more accessible. It is particularly focused on clients who already have a backend with authenticated credentials. Based on the [next-auth](https://github.com/nextauthjs/next-auth) library.
 
 ## 🚀 Getting Started
 
 Install using an package manager
 
 ```bash
-pnpm add @alpakaslab/next-jwt-secure
+pnpm add @alpakaslab/nextjs-jwt-auth
 # or
-yarn add @alpakaslab/next-jwt-secure
+yarn add @alpakaslab/nextjs-jwt-auth
 # or
-npm install @alpakaslab/next-jwt-secure
+npm install @alpakaslab/nextjs-jwt-auth
 ```
 
 ## 🧩 Initialization
@@ -20,7 +20,7 @@ First, create an API route with the path `/api/auth/route.ts` and generate API r
 
 ```ts
 // api/auth/route.ts
-import { getApiRoutes } from '@alpakaslab/next-jwt-secure'
+import { getApiRoutes } from '@alpakaslab/nextjs-jwt-auth'
 
 const { DELETE, POST } = getApiRoutes<{ email: string; password: string }>({
     callbacks: {
@@ -44,7 +44,7 @@ And create an middleware file `/middleware.ts` and generate the handler using th
 
 ```ts
 // middleware.ts
-import { getMiddleware } from '@alpakaslab/next-jwt-secure'
+import { getMiddleware } from '@alpakaslab/nextjs-jwt-auth'
 import moment from 'moment'
 
 export const middleware = getMiddleware(undefined, async (request, payload) => {
@@ -76,7 +76,7 @@ export const config = {
 `getSession()` - This server side function returns the user session or null when user is not authenticated
 
 ```tsx
-import { getSession } from '@alpakaslab/next-jwt-secure'
+import { getSession } from '@alpakaslab/nextjs-jwt-auth'
 import { redirect } from 'next/navigation'
 
 export default async function Page() {
@@ -91,6 +91,8 @@ export default async function Page() {
 `signIn()` - This client side helper function receives the user credentials as a parameter and call the sign in api route, and return true or false if user is authenticated
 
 ```ts
+import { signIn } from '@alpakaslab/nextjs-jwt-auth'
+
 const onSubmit = async data => {
     const authenticated = await signIn({
         email: data.email,
@@ -109,6 +111,8 @@ const onSubmit = async data => {
 `signOut()` - This client side helper function call the sign out api route and return true or false if user is correctly signout
 
 ```tsx
+import { signOut } from '@alpakaslab/nextjs-jwt-auth'
+
 const onClick = async () => {
     const success = await signOut()
 
