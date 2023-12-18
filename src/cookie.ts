@@ -15,11 +15,9 @@ function getCookieName(
     }`
 }
 
-function getCookieAge() {
+function getCookieAge(expires = DEFAULT_COOKIE_MAX_AGE) {
     const cookieExpires = new Date()
-    cookieExpires.setTime(
-        cookieExpires.getTime() + DEFAULT_COOKIE_MAX_AGE * 1000
-    )
+    cookieExpires.setTime(cookieExpires.getTime() + expires * 1000)
     return cookieExpires
 }
 

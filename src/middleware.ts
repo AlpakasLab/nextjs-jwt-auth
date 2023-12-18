@@ -5,6 +5,9 @@ import { JWT, decodeJWT, encodeJWT } from './jwt'
 
 type MiddlewareOptions = {
     redirectUrl?: string
+    cookie: {
+        experis?: number
+    }
 }
 
 type MiddlewareCallbackReturn = null | JWT | true
@@ -67,7 +70,7 @@ async function getMiddleware(
                     httpOnly: true,
                     sameSite: 'lax',
                     secure: isSecure,
-                    expires: getCookieAge()
+                    expires: getCookieAge(options?.cookie.experis)
                 })
                 return response
             }
