@@ -1,5 +1,5 @@
 {
-    "name": "next-jwt-secure",
+    "name": "@alpakaslab/next-jwt-secure",
     "version": "0.0.1",
     "description": "",
     "main": "index.js",
