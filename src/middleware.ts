@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextMiddleware, NextRequest, NextResponse } from 'next/server'
 import { getCookieAge, getCookieName } from './cookie'
 import { isSecureContext } from './enviroment'
 import { JWT, decodeJWT, encodeJWT } from './jwt'
@@ -17,10 +17,10 @@ type MiddlewareCallback = (
     payload: JWT
 ) => MiddlewareCallbackReturn | Promise<MiddlewareCallbackReturn>
 
-async function getMiddleware(
+function getMiddleware(
     options?: MiddlewareOptions,
     callback?: MiddlewareCallback
-) {
+): NextMiddleware {
     if (process.env.AUTH_SECRET === undefined)
         throw new Error('AUTH_SECRET is not defined')
     const authSecret = process.env.AUTH_SECRET
