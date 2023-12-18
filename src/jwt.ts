@@ -2,15 +2,13 @@ import { EncryptJWT, jwtDecrypt } from 'jose'
 import { hkdf } from '@panva/hkdf'
 import { DEFAULT_JWT_MAX_AGE } from './enviroment'
 
-type JWT = {
+export interface DefaultJWT extends Record<string, unknown> {
     name: string
     email: string
-    picture: string | null
-    accessToken: string
-    refreshToken: string
-    experisIn: number
-    role: string
+    picture?: string | null
 }
+
+export interface JWT extends Record<string, unknown>, DefaultJWT {}
 
 async function encodeJWT(params: {
     maxAge?: number
@@ -58,5 +56,3 @@ async function getEncryptionKey(
 }
 
 export { encodeJWT, decodeJWT }
-
-export type { JWT }
