@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.0.5
+
+### Patch Changes
+
+- 27cdbcc: fix middleware return function
+
 ## 0.0.4
 
 ### Patch Changes
