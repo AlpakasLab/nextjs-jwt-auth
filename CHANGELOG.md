@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.0.6
+
+### Patch Changes
+
+- a079df2: update how cookies are called try to fix production issues
+
 ## 0.0.5
 
 ### Patch Changes
