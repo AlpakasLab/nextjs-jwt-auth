@@ -16,20 +16,17 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
     if (process.env.AUTH_SECRET === undefined)
         throw new Error('AUTH_SECRET is not defined')
     const authSecret = process.env.AUTH_SECRET
-
     const isSecure = isSecureContext()
+    const sessionCookieName = getCookieName('session', isSecure)
 
     return {
         POST: async (request: Request) => {
             try {
-                const cookiesHandler = cookies()
                 const jsonBody = await request.json()
 
                 const user = await options.callbacks.signIn(jsonBody)
 
                 if (user === null) throw new Error('User not found')
-
-                const sessionCookieName = getCookieName('session', isSecure)
 
                 const token = await encodeJWT({
                     salt: sessionCookieName,
@@ -37,7 +34,7 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
                     token: user
                 })
 
-                cookiesHandler.set(sessionCookieName, token, {
+                cookies().set(sessionCookieName, token, {
                     httpOnly: true,
                     sameSite: 'lax',
                     secure: isSecure,
@@ -51,12 +48,8 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
         },
         DELETE: async () => {
             try {
-                const cookiesHandler = cookies()
-                const sessionCookieName = getCookieName(
-                    'session',
-                    isSecureContext()
-                )
-                cookiesHandler.delete(sessionCookieName)
+                cookies().delete(sessionCookieName)
+
                 return Response.json({ success: true }, { status: 200 })
             } catch (e) {
                 return Response.json({ success: false }, { status: 500 })
