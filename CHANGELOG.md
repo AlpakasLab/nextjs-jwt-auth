@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.0.8
+
+### Patch Changes
+
+- 06ad33f: fix cookies delete to cookies set to avoid issues
+
 ## 0.0.7
 
 ### Patch Changes
