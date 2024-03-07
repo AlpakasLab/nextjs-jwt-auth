@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.0.7
+
+### Patch Changes
+
+- f43c874: update cookie delete function
+
 ## 0.0.6
 
 ### Patch Changes
