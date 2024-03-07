@@ -48,9 +48,11 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
         },
         DELETE: async () => {
             try {
-                cookies().delete({
+                cookies().set({
                     name: sessionCookieName,
+                    value: '',
                     httpOnly: true,
+                    expires: 0,
                     secure: isSecure,
                     sameSite: 'lax'
                 })
