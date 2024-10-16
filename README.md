@@ -45,7 +45,6 @@ Second, create an middleware file `/middleware.ts` and generate the handler usin
 ```ts
 // middleware.ts
 import { getMiddleware } from '@alpakaslab/nextjs-jwt-auth'
-import moment from 'moment'
 
 export const middleware = getMiddleware(undefined, async (request, payload) => {
     // Refresh token logic
