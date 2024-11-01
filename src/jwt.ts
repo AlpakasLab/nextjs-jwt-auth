@@ -1,6 +1,6 @@
 import { EncryptJWT, jwtDecrypt } from 'jose'
 import { hkdf } from '@panva/hkdf'
-import { DEFAULT_JWT_MAX_AGE } from './enviroment'
+import { DEFAULT_JWT_MAX_AGE } from './environment'
 
 export interface DefaultJWT extends Record<string, unknown> {
     name: string

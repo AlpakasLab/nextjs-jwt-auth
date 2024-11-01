@@ -1,14 +1,14 @@
 async function signIn<C>(data: C) {
-    const signInRespose = await fetch('/api/auth/', {
+    const signInResponse = await fetch('/api/auth/', {
         method: 'POST',
         body: JSON.stringify(data)
     })
 
-    if (!signInRespose.ok) {
+    if (!signInResponse.ok) {
         return false
     }
 
-    const responseData = (await signInRespose.json()) as {
+    const responseData = (await signInResponse.json()) as {
         success: boolean
     }
 
@@ -20,15 +20,15 @@ async function signIn<C>(data: C) {
 }
 
 async function signOut() {
-    const signInRespose = await fetch('/api/auth/', {
+    const signInResponse = await fetch('/api/auth/', {
         method: 'DELETE'
     })
 
-    if (!signInRespose.ok) {
+    if (!signInResponse.ok) {
         return false
     }
 
-    const responseData = (await signInRespose.json()) as {
+    const responseData = (await signInResponse.json()) as {
         success: boolean
     }
 

@@ -1,12 +1,12 @@
 import { NextMiddleware, NextRequest, NextResponse } from 'next/server'
 import { getCookieAge, getCookieName } from './cookie'
-import { isSecureContext } from './enviroment'
+import { isSecureContext } from './environment'
 import { JWT, decodeJWT, encodeJWT } from './jwt'
 
 type MiddlewareOptions = {
     redirectUrl?: string
     cookie?: {
-        experis?: number
+        expires?: number
     }
 }
 
@@ -55,7 +55,12 @@ function getMiddleware(
                 const response = NextResponse.redirect(
                     options?.redirectUrl ?? new URL('/', request.url)
                 )
-                response.cookies.delete(sessionCookieName)
+                response.cookies.delete({
+                    name: sessionCookieName,
+                    httpOnly: true,
+                    secure: isSecure,
+                    sameSite: 'lax'
+                })
                 return response
             } else if (result === true) {
                 return NextResponse.next()
@@ -70,7 +75,7 @@ function getMiddleware(
                     httpOnly: true,
                     sameSite: 'lax',
                     secure: isSecure,
-                    expires: getCookieAge(options?.cookie?.experis)
+                    expires: getCookieAge(options?.cookie?.expires)
                 })
                 return response
             }

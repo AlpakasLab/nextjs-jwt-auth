@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers'
+
 import { getCookieAge, getCookieName } from './cookie'
-import { isSecureContext } from './enviroment'
+import { isSecureContext } from './environment'
 import { JWT, encodeJWT } from './jwt'
 
 type ApiOptions<C> = {
@@ -8,7 +9,7 @@ type ApiOptions<C> = {
         signIn: (credentials: C) => JWT | null | Promise<JWT | null>
     }
     cookie?: {
-        experis?: number
+        expires?: number
     }
 }
 
@@ -34,11 +35,13 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
                     token: user
                 })
 
-                cookies().set(sessionCookieName, token, {
+                const cookieStore = await cookies()
+
+                cookieStore.set(sessionCookieName, token, {
                     httpOnly: true,
                     sameSite: 'lax',
                     secure: isSecure,
-                    expires: getCookieAge(options.cookie?.experis)
+                    expires: getCookieAge(options.cookie?.expires)
                 })
 
                 return Response.json({ success: true }, { status: 200 })
@@ -48,11 +51,11 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
         },
         DELETE: async () => {
             try {
-                cookies().set({
+                const cookieStore = await cookies()
+
+                cookieStore.delete({
                     name: sessionCookieName,
-                    value: '',
                     httpOnly: true,
-                    expires: 0,
                     secure: isSecure,
                     sameSite: 'lax'
                 })

@@ -1,5 +1,5 @@
 import { getCookieName } from './cookie'
-import { isSecureContext } from './enviroment'
+import { isSecureContext } from './environment'
 import { cookies } from 'next/headers'
 import { decodeJWT } from './jwt'
 
@@ -7,7 +7,7 @@ async function getSession() {
     if (process.env.AUTH_SECRET === undefined)
         throw new Error('AUTH_SECRET is not defined')
 
-    const cookiesHandler = cookies()
+    const cookiesHandler = await cookies()
     const sessionCookieName = getCookieName('session', isSecureContext())
 
     const sessionCookie = cookiesHandler.get(sessionCookieName)
