@@ -1,4 +1,4 @@
-import { DEFAULT_COOKIE_MAX_AGE } from './enviroment'
+import { DEFAULT_COOKIE_MAX_AGE } from './environment'
 
 const LIBRARY_SLUG = 'next-jwt-secure'
 
