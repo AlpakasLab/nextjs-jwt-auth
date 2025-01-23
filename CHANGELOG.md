@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.1.2
+
+### Patch Changes
+
+-   2180764: fix signIn return type
+
 ## 0.1.1
 
 ### Patch Changes
