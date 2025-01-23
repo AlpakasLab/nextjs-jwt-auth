@@ -105,7 +105,7 @@ const onSubmit = async data => {
         password: data.password
     })
 
-    if (authenticated) {
+    if (authenticated.success) {
         // signIn success logic
         router.replace('/admin/')
     } else {

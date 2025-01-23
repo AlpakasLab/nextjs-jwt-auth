@@ -7,7 +7,7 @@ async function signIn<C>(data: C) {
     })
 
     if (!signInResponse.ok) {
-        return false
+        return { success: false }
     }
 
     const responseData = (await signInResponse.json()) as {
