@@ -44,7 +44,10 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
                     expires: getCookieAge(options.cookie?.expires)
                 })
 
-                return Response.json({ success: true }, { status: 200 })
+                return Response.json(
+                    { success: true, user: user },
+                    { status: 200 }
+                )
             } catch (e) {
                 return Response.json({ success: false }, { status: 500 })
             }

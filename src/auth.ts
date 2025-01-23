@@ -1,3 +1,5 @@
+import type { JWT } from './jwt'
+
 async function signIn<C>(data: C) {
     const signInResponse = await fetch('/api/auth/', {
         method: 'POST',
@@ -10,13 +12,10 @@ async function signIn<C>(data: C) {
 
     const responseData = (await signInResponse.json()) as {
         success: boolean
+        user?: JWT
     }
 
-    if (responseData.success) {
-        return true
-    } else {
-        return false
-    }
+    return responseData
 }
 
 async function signOut() {
