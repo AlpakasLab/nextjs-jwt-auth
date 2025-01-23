@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.1.1
+
+### Patch Changes
+
+-   f0da1d6: add user data in signin return
+
 ## 0.1.0
 
 ### Minor Changes
