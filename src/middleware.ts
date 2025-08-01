@@ -1,7 +1,7 @@
 import { NextMiddleware, NextRequest, NextResponse } from 'next/server'
-import { getCookieAge, getCookieName } from './cookie'
-import { isSecureContext } from './environment'
-import { JWT, decodeJWT, encodeJWT } from './jwt'
+import { getCookieAge, getCookieName } from './shared/cookie'
+import { isSecureContext } from './shared/environment'
+import { JWT, decryptJWT, encryptJWT } from './core/jwt'
 
 type MiddlewareOptions = {
     redirectUrl?: string
@@ -37,7 +37,7 @@ function getMiddleware(
             )
         }
 
-        const decodedSessionPayload = await decodeJWT({
+        const decodedSessionPayload = await decryptJWT({
             token: sessionCookie.value,
             salt: sessionCookieName,
             secret: authSecret
@@ -65,7 +65,7 @@ function getMiddleware(
             } else if (result === true) {
                 return NextResponse.next()
             } else {
-                const token = await encodeJWT({
+                const token = await encryptJWT({
                     salt: sessionCookieName,
                     secret: authSecret,
                     token: result
@@ -75,7 +75,7 @@ function getMiddleware(
                     httpOnly: true,
                     sameSite: 'lax',
                     secure: isSecure,
-                    expires: getCookieAge(options?.cookie?.expires)
+                    expires: getCookieAge()
                 })
                 return response
             }
