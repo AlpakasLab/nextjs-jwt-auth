@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.2.2
+
+### Patch Changes
+
+- 658b09e: move redirect and delete function inside middleware
+
 ## 0.2.1
 
 ### Patch Changes
