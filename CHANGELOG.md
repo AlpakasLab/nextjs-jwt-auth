@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.2.0
+
+### Minor Changes
+
+- 871001a: update package builder
+
 ## 0.1.4
 
 ### Patch Changes
