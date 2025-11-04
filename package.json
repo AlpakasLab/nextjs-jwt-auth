@@ -2,9 +2,10 @@
     "name": "@alpakaslab/nextjs-jwt-auth",
     "version": "0.2.0",
     "description": "",
-    "main": "index.js",
-    "module": "dist/index.mjs",
-    "types": "dist/index.d.ts",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.cts",
     "files": [
         "dist/*",
         "LICENSE",
@@ -12,13 +13,17 @@
     ],
     "exports": {
         ".": {
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
         },
-        "./session": "./dist/src/session.js"
+        "./session": {
+            "import": "./dist/src/session.mjs",
+            "require": "./dist/src/session.cjs"
+        },
+        "./package.json": "./package.json"
     },
     "scripts": {
-        "build": "tsdown index.ts src/session.ts --format esm --format cjs",
+        "build": "tsdown",
         "lint": "tsc",
         "release": "pnpm build && changeset publish"
     },
