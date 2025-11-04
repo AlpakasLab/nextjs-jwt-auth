@@ -13,8 +13,8 @@ export interface JWT extends Record<string, unknown>, DefaultJWT {}
 const enc = 'A256CBC-HS512'
 
 async function getEncryptionKey(
-    ikm: Uint8Array,
-    salt: Uint8Array,
+    ikm: BufferSource,
+    salt: BufferSource,
     keyLen = 64
 ): Promise<Uint8Array> {
     const importedKey = await crypto.subtle.importKey(
@@ -46,7 +46,10 @@ async function encryptJWT(params: {
     const { token = {}, secret, maxAge = DEFAULT_JWT_MAX_AGE, salt } = params
     const encodedKey = new TextEncoder().encode(secret)
     const encodedSalt = new TextEncoder().encode(salt)
-    const encryptionSecret = await getEncryptionKey(encodedKey, encodedSalt)
+    const encryptionSecret = await getEncryptionKey(
+        new Uint8Array(encodedKey.buffer),
+        new Uint8Array(encodedSalt.buffer)
+    )
     const now = () => (Date.now() / 1000) | 0
 
     return await new EncryptJWT(token)
