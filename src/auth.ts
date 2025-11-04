@@ -1,4 +1,4 @@
-import type { JWT } from './jwt'
+import type { JWT } from './core/jwt'
 
 async function signIn<C>(data: C) {
     const signInResponse = await fetch('/api/auth/', {

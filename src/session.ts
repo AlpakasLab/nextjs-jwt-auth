@@ -1,7 +1,7 @@
-import { getCookieName } from './cookie'
-import { isSecureContext } from './environment'
+import { getCookieName } from './shared/cookie'
+import { isSecureContext } from './shared/environment'
 import { cookies } from 'next/headers'
-import { decodeJWT } from './jwt'
+import { decryptJWT } from './core/jwt'
 
 async function getSession() {
     if (process.env.AUTH_SECRET === undefined)
@@ -13,15 +13,20 @@ async function getSession() {
     const sessionCookie = cookiesHandler.get(sessionCookieName)
     if (!sessionCookie || !sessionCookie.value) return null
 
-    const decodedSessionPayload = await decodeJWT({
-        token: sessionCookie.value,
-        salt: sessionCookieName,
-        secret: process.env.AUTH_SECRET
-    })
+    try {
+        const decodedSessionPayload = await decryptJWT({
+            token: sessionCookie.value,
+            salt: sessionCookieName,
+            secret: process.env.AUTH_SECRET
+        })
 
-    if (!decodedSessionPayload) return null
+        if (!decodedSessionPayload) return null
 
-    return decodedSessionPayload
+        return decodedSessionPayload
+    } catch (e) {
+        cookiesHandler.delete(sessionCookieName)
+        return null
+    }
 }
 
 export { getSession }

@@ -1,4 +1,4 @@
-import { DEFAULT_COOKIE_MAX_AGE } from './environment'
+const DEFAULT_COOKIE_MAX_AGE = 30 * 24 * 60 * 60
 
 const LIBRARY_SLUG = 'next-jwt-secure'
 
@@ -15,9 +15,11 @@ function getCookieName(
     }`
 }
 
-function getCookieAge(expires = DEFAULT_COOKIE_MAX_AGE) {
+function getCookieAge() {
     const cookieExpires = new Date()
-    cookieExpires.setTime(cookieExpires.getTime() + expires * 1000)
+    cookieExpires.setTime(
+        cookieExpires.getTime() + DEFAULT_COOKIE_MAX_AGE * 1000
+    )
     return cookieExpires
 }
 

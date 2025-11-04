@@ -1,16 +1,11 @@
 import { cookies } from 'next/headers'
 
-import { getCookieAge, getCookieName } from './cookie'
-import { isSecureContext } from './environment'
-import { JWT, encodeJWT } from './jwt'
+import { getCookieAge, getCookieName } from './shared/cookie'
+import { isSecureContext } from './shared/environment'
+import { JWT, encryptJWT } from './core/jwt'
 
 type ApiOptions<C> = {
-    callbacks: {
-        signIn: (credentials: C) => JWT | null | Promise<JWT | null>
-    }
-    cookie?: {
-        expires?: number
-    }
+    signIn: (credentials: C) => Promise<JWT | null>
 }
 
 function getApiRoutes<C>(options: ApiOptions<C>) {
@@ -25,11 +20,11 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
             try {
                 const jsonBody = await request.json()
 
-                const user = await options.callbacks.signIn(jsonBody)
+                const user = await options.signIn(jsonBody)
 
                 if (user === null) throw new Error('User not found')
 
-                const token = await encodeJWT({
+                const token = await encryptJWT({
                     salt: sessionCookieName,
                     secret: authSecret,
                     token: user
@@ -41,7 +36,7 @@ function getApiRoutes<C>(options: ApiOptions<C>) {
                     httpOnly: true,
                     sameSite: 'lax',
                     secure: isSecure,
-                    expires: getCookieAge(options.cookie?.expires)
+                    expires: getCookieAge()
                 })
 
                 return Response.json(
