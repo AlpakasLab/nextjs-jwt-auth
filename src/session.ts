@@ -1,10 +1,11 @@
+'use server'
+
 import { getCookieName } from './shared/cookie'
 import { isSecureContext } from './shared/environment'
 import { cookies } from 'next/headers'
 import { decryptJWT } from './core/jwt'
 
 async function getSession() {
-    'use server'
     if (process.env.AUTH_SECRET === undefined)
         throw new Error('AUTH_SECRET is not defined')
 
