@@ -1,5 +1,11 @@
 # @alpakaslab/nextjs-jwt-auth
 
+## 0.1.4
+
+### Patch Changes
+
+- 2c8ebff: add use server inside get session
+
 ## 0.1.3
 
 ### Patch Changes
