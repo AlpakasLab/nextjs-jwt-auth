@@ -19,8 +19,7 @@
         "./session": {
             "import": "./dist/src/session.mjs",
             "require": "./dist/src/session.cjs"
-        },
-        "./package.json": "./package.json"
+        }
     },
     "scripts": {
         "build": "tsdown",

@@ -37,50 +37,63 @@ function getMiddleware(
             )
         }
 
-        const decodedSessionPayload = await decryptJWT({
-            token: sessionCookie.value,
-            salt: sessionCookieName,
-            secret: authSecret
-        })
+        try {
+            const decodedSessionPayload = await decryptJWT({
+                token: sessionCookie.value,
+                salt: sessionCookieName,
+                secret: authSecret
+            })
 
-        if (!decodedSessionPayload)
-            return NextResponse.redirect(
-                options?.redirectUrl ?? new URL('/', request.url)
-            )
-
-        if (callback) {
-            const result = await callback(request, decodedSessionPayload)
-
-            if (result === null) {
-                const response = NextResponse.redirect(
+            if (!decodedSessionPayload)
+                return NextResponse.redirect(
                     options?.redirectUrl ?? new URL('/', request.url)
                 )
-                response.cookies.delete({
-                    name: sessionCookieName,
-                    httpOnly: true,
-                    secure: isSecure,
-                    sameSite: 'lax'
-                })
-                return response
-            } else if (result === true) {
-                return NextResponse.next()
+
+            if (callback) {
+                const result = await callback(request, decodedSessionPayload)
+
+                if (result === null) {
+                    const response = NextResponse.redirect(
+                        options?.redirectUrl ?? new URL('/', request.url)
+                    )
+                    response.cookies.delete({
+                        name: sessionCookieName,
+                        httpOnly: true,
+                        secure: isSecure,
+                        sameSite: 'lax'
+                    })
+                    return response
+                } else if (result === true) {
+                    return NextResponse.next()
+                } else {
+                    const token = await encryptJWT({
+                        salt: sessionCookieName,
+                        secret: authSecret,
+                        token: result
+                    })
+                    const response = NextResponse.next()
+                    response.cookies.set(sessionCookieName, token, {
+                        httpOnly: true,
+                        sameSite: 'lax',
+                        secure: isSecure,
+                        expires: getCookieAge()
+                    })
+                    return response
+                }
             } else {
-                const token = await encryptJWT({
-                    salt: sessionCookieName,
-                    secret: authSecret,
-                    token: result
-                })
-                const response = NextResponse.next()
-                response.cookies.set(sessionCookieName, token, {
-                    httpOnly: true,
-                    sameSite: 'lax',
-                    secure: isSecure,
-                    expires: getCookieAge()
-                })
-                return response
+                return NextResponse.next()
             }
-        } else {
-            return NextResponse.next()
+        } catch (e) {
+            const response = NextResponse.redirect(
+                options?.redirectUrl ?? new URL('/', request.url)
+            )
+            response.cookies.delete({
+                name: sessionCookieName,
+                httpOnly: true,
+                secure: isSecure,
+                sameSite: 'lax'
+            })
+            return response
         }
     }
 }

@@ -26,7 +26,6 @@ async function getSession() {
 
         return decodedSessionPayload
     } catch (e) {
-        cookiesHandler.delete(sessionCookieName)
         return null
     }
 }
